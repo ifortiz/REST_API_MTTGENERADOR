@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Unidad;
+import com.example.demo.model.Central;
 import com.example.demo.service.IUnidadService;
+import com.example.demo.service.ICentralService;
 
 @CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
@@ -29,6 +31,8 @@ public class UnidadController {
 	
 	@Autowired
 	private IUnidadService service;
+	@Autowired
+	private ICentralService centralService;
 	
 	
 	@GetMapping("/listar")
@@ -64,6 +68,15 @@ public class UnidadController {
 
 		Map<String, Object> response = new HashMap<>();
 		try {
+
+									//para llaves foraneas
+			Central central = centralService.findById(unidad.getCentral().getId());
+				if(central != null) {
+					unidad.setCentral(central);
+				} else {
+					unidad.setCentral(null);
+			}
+
 			newUnidad = service.save(unidad);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "ERROR EN BASE");
@@ -92,6 +105,13 @@ public class UnidadController {
 		try {
 
 			currentUnidad.setNombre(unidad.getNombre());
+
+									Central central = centralService.findById(unidad.getCentral().getId());
+			if(central != null) {
+				currentUnidad.setCentral(central);
+			}else {
+				currentUnidad.setCentral(null);
+			}
 			
 			unidadUpdated = service.save(currentUnidad);
 

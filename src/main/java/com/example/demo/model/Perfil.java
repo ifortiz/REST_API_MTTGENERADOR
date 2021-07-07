@@ -25,13 +25,7 @@ public class Perfil implements Serializable  {
 	public Perfil() {
 	}
 	
-	// SE CREARA TABLA INTERMEDIA CON LA RELACION DE AMBAS TABLAS
-		@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-		@JoinTable(name = "perfil_permiso", joinColumns = @JoinColumn(name = "id_perfil"), inverseJoinColumns = @JoinColumn(name = "id_permiso"), uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "id_perfil", "id_permiso" }) })
-		private List<Permiso> permisos;
-		
-	
+
 	
 
 	public Long getId() {
@@ -50,13 +44,7 @@ public class Perfil implements Serializable  {
 		this.nombre = nombre;
 	}
 		
-	public List<Permiso> getPermisos() {
-		return permisos;
-	}
 
-	public void setPermisos(List<Permiso> permisos) {
-		this.permisos = permisos;
-	}
 
 	private static final long serialVersionUID = 1L;
 	

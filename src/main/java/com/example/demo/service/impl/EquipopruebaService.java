@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.EquipoPruebar;
 import com.example.demo.model.Equipoprueba;
 import com.example.demo.modelDAO.IEquipopruebaDAO;
 import com.example.demo.service.IEquipopruebaService;
@@ -33,6 +34,12 @@ public class EquipopruebaService implements IEquipopruebaService {
 	@Override
 	public void delete(Long id) {
 		dao.deleteById(id);
+	}
+
+	@Override
+	public List<Equipoprueba> findAll2() {
+		// TODO Auto-generated method stub
+		return dao.findEquiposPrueba();
 	}
 
 }

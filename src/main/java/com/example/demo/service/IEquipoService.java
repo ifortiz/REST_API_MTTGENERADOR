@@ -12,8 +12,8 @@ public interface IEquipoService {
 	
 	public Equipo findById(Long id);
 	
-
-	
-	public void delete(Long id);
+	public List<Equipo> listarEquiposMotor();
+		
+		public void delete(Long id);
 
 }

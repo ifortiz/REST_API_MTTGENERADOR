@@ -15,7 +15,7 @@ public interface IDetalleactividadDAO extends CrudRepository<Detalleactividad, L
 	    @Transactional
 	    public int saveWithOutActividad
 	    (@Param("nomprueba")String nomprueba,
-	    		@Param("valorprueba")Double valorprueba,
+	    		@Param("valorprueba")String valorprueba,
 	    		@Param("actividad_id")long actividad_id);
 	   
 }

@@ -10,17 +10,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-public class Equipogeneral implements Serializable{
+@Table(name = "orden_trabajo")
+public class OrdenTrabajo implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private long ot;
-	private Date fecha;
+	private String fecha;
+
+	private Long  idEquipo;
 	
-	public Equipogeneral() {
+	public OrdenTrabajo() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -40,6 +44,15 @@ public class Equipogeneral implements Serializable{
 	private Unidad unidad;
 	
 	
+
+	public Long getIdEquipo() {
+		return idEquipo;
+	}
+
+	public void setIdEquipo(Long idEquipo) {
+		this.idEquipo= idEquipo;
+	}
+
 	public Unidad getUnidad() {
 		return unidad;
 	}
@@ -64,11 +77,11 @@ public class Equipogeneral implements Serializable{
 		this.ot = ot;
 	}
 
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 

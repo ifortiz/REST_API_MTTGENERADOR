@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,19 +41,21 @@ public class Actividad implements Serializable {
 	
 	// LA TABLA USUARIO TENDRA EL ID DE LA OTRA TABLA
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "equipo", referencedColumnName = "idcod",  insertable = false)
+	@JoinColumn(name = "equipo", referencedColumnName = "idcod",  insertable = false, updatable =false)
 	private Equipo equipo;
 		
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "actividadequipo", referencedColumnName = "id")
-	private Actividadequipo actividadequipo;
+	// LA TABLA USUARIO TENDRA EL ID DE LA OTRA TABLA
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "equipogeneral", referencedColumnName = "id", updatable = true)
+	private OrdenTrabajo equipogeneral;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "equipoprueba", referencedColumnName = "id")
+
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "equipoprueba", referencedColumnName = "id", updatable = true,insertable=false)
 	private Equipoprueba equipoprueba;
 
 	// SE CREARA TABLA INTERMEDIA CON LA RELACION DE AMBAS TABLAS
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "actividad_detalleactividad", joinColumns = @JoinColumn(name = "id_actividad"), inverseJoinColumns = @JoinColumn(name = "id_detalleactividad"), uniqueConstraints = {
 	@UniqueConstraint(columnNames = { "id_actividad", "id_detalleactividad" }) })
 		private List<Detalleactividad> detalleactividad;
@@ -66,6 +69,8 @@ public class Actividad implements Serializable {
 	}
 
 	public Equipoprueba getEquipoprueba() {
+		if(equipoprueba==null)
+			equipoprueba=new Equipoprueba();
 		return equipoprueba;
 	}
 
@@ -146,21 +151,24 @@ public class Actividad implements Serializable {
 	}
 
 	
+	public OrdenTrabajo getEquipogeneral() {
+		if(equipogeneral==null)
+			equipogeneral=new OrdenTrabajo();
+		return equipogeneral;
+	}
+
+	public void setEquipogeneral(OrdenTrabajo equipogeneral) {
+		this.equipogeneral = equipogeneral;
+	}
+
 	public Equipo getEquipo() {
+		if(equipo==null)
+			equipo=new Equipo();
 		return equipo;
 	}
 
 	public void setEquipo(Equipo equipo) {
 		this.equipo = equipo;
-	}
-
-
-	public Actividadequipo getActividadequipo() {
-		return actividadequipo;
-	}
-
-	public void setActividadequipo(Actividadequipo actividadequipo) {
-		this.actividadequipo = actividadequipo;
 	}
 
 	public void setId(Long id) {

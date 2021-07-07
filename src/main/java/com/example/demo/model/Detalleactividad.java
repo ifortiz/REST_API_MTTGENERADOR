@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,23 +13,28 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Detalleactividad implements Serializable {
 
+	/**
+	 * 
+	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nomprueba;
-	private Double valorprueba;
+	private String valorprueba;
 	
 	public Detalleactividad() {
 		// TODO Auto-generated constructor stub
 	}
+    @JoinColumn(name = "actividad_id", referencedColumnName = "id")
+	private Actividad actividad;
+	private static final long serialVersionUID = 1L;
 	
 	@ManyToOne    ( cascade = {
 	        CascadeType.PERSIST, 
 	        CascadeType.MERGE
 	    })
-    @JoinColumn(name = "actividad_id", referencedColumnName = "id")
-	private Actividad actividad;
-	private static final long serialVersionUID = 1L;
+
 
 	public Long getId() {
 		return id;
@@ -44,11 +48,11 @@ public class Detalleactividad implements Serializable {
 		this.nomprueba = nomprueba;
 	}
 	
-	public Double getValorprueba() {
+	public String getValorprueba() {
 		return valorprueba;
 	}
 	
-	public void setValorprueba(Double valorprueba) {
+	public void setValorprueba(String valorprueba) {
 		this.valorprueba = valorprueba;
 	}
 	
@@ -59,5 +63,4 @@ public class Detalleactividad implements Serializable {
 	public void setActividad(Actividad actividad) {
 		this.actividad = actividad;
 	}
-	
 }

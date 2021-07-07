@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Equipo;
+import com.example.demo.model.Sistema;
 import com.example.demo.service.IEquipoService;
+import com.example.demo.service.ISistemaService;
 
 @CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
@@ -28,6 +30,8 @@ public class EquipoController {
 
 	@Autowired
 	private IEquipoService service;
+		@Autowired
+	private ISistemaService sistemaService;
 	
 	
 	@GetMapping("/listar")
@@ -57,12 +61,22 @@ public class EquipoController {
 		return new ResponseEntity<Equipo>(equipo, HttpStatus.OK);
 	}
 
+	
+	
 	@PostMapping("/equipo")
 	public ResponseEntity<?> create(@RequestBody Equipo equipo) {
 		Equipo newEquipo = null;
 
 		Map<String, Object> response = new HashMap<>();
 		try {
+						//para llaves foraneas
+			Sistema sistema = sistemaService.findById(equipo.getSistema().getId());
+				if(sistema != null) {
+					equipo.setSistema(sistema);
+				} else {
+					equipo.setSistema(null);
+			}
+
 			newEquipo = service.save(equipo);
 		} catch (DataAccessException e) {
 			response.put("mensaje", "ERROR EN BASE");
@@ -73,6 +87,11 @@ public class EquipoController {
 		response.put("equipo", newEquipo);
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("listar-motores")
+	public ResponseEntity<?> findEquiposMotor(){
+		return ResponseEntity.ok(service.listarEquiposMotor());
 	}
 	
 	@PutMapping("/equipo/{id}")
@@ -97,7 +116,17 @@ public class EquipoController {
 			currentEquipo.setSerie(equipo.getSerie());
 			currentEquipo.setTipo(equipo.getTipo());
 			currentEquipo.setVoltaje(equipo.getVoltaje());
-			currentEquipo.setIdEquipoGeneral(equipo.getIdEquipoGeneral());
+			//currentEquipo.setIdEquipoGeneral(equipo.getIdEquipoGeneral());
+			equipoUpdated = service.save(currentEquipo);
+
+
+						Sistema sistema = sistemaService.findById(equipo.getSistema().getId());
+			if(sistema != null) {
+				currentEquipo.setSistema(sistema);
+			}else {
+				currentEquipo.setSistema(null);
+			}
+			
 			equipoUpdated = service.save(currentEquipo);
 
 		} catch (DataAccessException e) {

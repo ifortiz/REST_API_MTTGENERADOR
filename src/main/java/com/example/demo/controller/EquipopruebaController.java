@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.EquipoPruebar;
 import com.example.demo.model.Equipoprueba;
 import com.example.demo.service.IEquipopruebaService;
 
@@ -35,6 +36,10 @@ public class EquipopruebaController {
 		return service.findAll();
 	}
 			
+	@GetMapping("/listar2")
+	public List<Equipoprueba> listar2() {
+		return service.findAll2();
+	}
 	@GetMapping("/equipoprueba/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		

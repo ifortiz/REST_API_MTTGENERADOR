@@ -3,6 +3,7 @@ package com.example.demo.model;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,26 +16,34 @@ import javax.persistence.OneToOne;
 public class Equipo implements Serializable {
 
 	@Id
-
-	private long idcod;
+	 @Column(name = "idcod", updatable = false, nullable = false)
+	private Long idcod;
+	 @Column(name = "descripcion", updatable = false, nullable = false)
 	private String descripcion;
+	 @Column(name = "potencia", updatable = false, nullable = false)
 	private String potencia;
+	 @Column(name = "modelo", updatable = false, nullable = false)
 	private String modelo;
+	 @Column(name = "corrientenom", updatable = false, nullable = false)
 	private String corrientenom;
+	 @Column(name = "serie", updatable = false, nullable = false)
 	private String serie;
+	 @Column(name = "tipo", updatable = false, nullable = false)
 	private String tipo;
+	 @Column(name = "voltaje", updatable = false, nullable = false)
 	private String voltaje;
+	private long sistemaId;
 	
 	public Equipo() {
 		// TODO Auto-generated constructor stub
 	}
 	// LA TABLA USUARIO TENDRA EL ID DE LA OTRA TABLA
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sistema", referencedColumnName = "id")
+	@JoinColumn(name = "sistema", referencedColumnName = "id", updatable = false)
 	private Sistema sistema;
 		
 
-	private Long equipogeneral;
+	/*private Long equipogeneral;
 	
 	
 	public Long getIdEquipoGeneral() {
@@ -43,13 +52,13 @@ public class Equipo implements Serializable {
 
 	public void setIdEquipoGeneral(Long equipogeneral) {
 		this.equipogeneral = equipogeneral;
-	}
+	}*/
 
-	public long getIdcod() {
+	public Long getIdcod() {
 		return idcod;
 	}
 
-	public void setIdcod(long idcod) {
+	public void setIdcod(Long idcod) {
 		this.idcod = idcod;
 	}
 
@@ -117,6 +126,13 @@ public class Equipo implements Serializable {
 		this.sistema = sistema;
 	}
 
-	private static final long serialVersionUID = 1L;
+		public long getSistemaId() {
+		return sistemaId;
+	}
+
+	public void setSistemaId(long sistemaId) {
+		this.sistemaId = sistemaId;
+	}
+		private static final long serialVersionUID = 1L;
 
 }

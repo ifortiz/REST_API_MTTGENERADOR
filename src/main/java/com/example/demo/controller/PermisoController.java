@@ -29,13 +29,13 @@ public class PermisoController {
 	@Autowired
 	private IPermisoService service;
 	
-	
+	/*
 	@GetMapping("/permiso-listar")
 	public List<Permiso> listar() {
 		return service.findAll();
 	}
-	
-	@GetMapping("/permiso/{nombre}")
+	*/
+	/*@GetMapping("/permiso/{nombre}")
 	public ResponseEntity<?> getNombre(@PathVariable String nombre) {
 		
 		Permiso permiso = null;
@@ -56,9 +56,9 @@ public class PermisoController {
 		
 		return new ResponseEntity<Permiso>(permiso, HttpStatus.OK);
 	}
-	
+	*/
 		
-	@GetMapping("/permiso/{id}")
+	/*@GetMapping("/permiso/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
 		Permiso permiso = null;
@@ -78,9 +78,9 @@ public class PermisoController {
 		}
 		
 		return new ResponseEntity<Permiso>(permiso, HttpStatus.OK);
-	}
+	}*/
 
-	@PostMapping("/permiso")
+	/*@PostMapping("/permiso")
 	public ResponseEntity<?> create(@RequestBody Permiso permiso) {
 		Permiso newPermiso = null;
 
@@ -96,8 +96,8 @@ public class PermisoController {
 		response.put("permiso", newPermiso);
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-	}
-	
+	}*/
+	/*
 	@PutMapping("/permiso/{id}")
 	public ResponseEntity<?> update(@RequestBody Permiso permiso, @PathVariable Long id) {
 
@@ -140,5 +140,5 @@ public class PermisoController {
 		}
 		response.put("mensaje", "BORRADO CORRECTAMENTE");
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
-	}
+	}*/
 }

@@ -35,5 +35,12 @@ public class EquipoService implements IEquipoService{
 		dao.deleteById(id);
 	}
 
+	@Override
+	public List<Equipo> listarEquiposMotor() {
+		// TODO Auto-generated method stub
+		return dao.findByDescripcionContaining("motor");
+	}
+
+
 
 }

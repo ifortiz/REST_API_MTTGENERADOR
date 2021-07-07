@@ -17,6 +17,7 @@ public class Unidad implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nombre;
+	private long centralId;
 	
 	public Unidad() {
 		// TODO Auto-generated constructor stub
@@ -49,6 +50,14 @@ public class Unidad implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public long getCentralId() {
+		return centralId;
+	}
+
+	public void setCentralId(long centralId) {
+		this.centralId = centralId;
 	}
 
 	private static final long serialVersionUID = 1L;

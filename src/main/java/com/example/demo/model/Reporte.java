@@ -17,7 +17,19 @@ public class Reporte implements Serializable {
 	private String modificacion;
 	private String condicion;
 	private String pendiente;
+	private long id_ot;
 	
+	
+	
+	
+	public long getId_ot() {
+		return id_ot;
+	}
+
+	public void setId_ot(long id_ot) {
+		this.id_ot = id_ot;
+	}
+
 	public Reporte() {
 		// TODO Auto-generated constructor stub
 	}

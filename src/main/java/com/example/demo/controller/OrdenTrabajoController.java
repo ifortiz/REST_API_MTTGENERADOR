@@ -17,27 +17,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Actividad;
 import com.example.demo.model.Equipo;
-import com.example.demo.model.Equipogeneral;
-import com.example.demo.service.IEquipogeneralService;
+import com.example.demo.model.OrdenTrabajo;
+import com.example.demo.model.Reporte;
+import com.example.demo.model.Usuario;
+import com.example.demo.service.IActividadService;
+import com.example.demo.service.IOrdenTrabajoService;
 
 @CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
 @RequestMapping("/equipogeneral")
-public class EquipogeneralController {
+public class OrdenTrabajoController {
 
 	@Autowired
-	private IEquipogeneralService service;
+	private IOrdenTrabajoService service;
+	@Autowired
+	private IActividadService serviceActividad;
 
 	@GetMapping("/listar")
-	public List<Equipogeneral> listar() {
+	public List<OrdenTrabajo> listar() {
 		return service.findAll();
 	}
 			
 	@GetMapping("/equipogeneralid/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
-		Equipogeneral equipogeneral = null;
+		OrdenTrabajo equipogeneral = null;
 		Map<String, Object> response = new HashMap<>();
 		
 		try{
@@ -49,63 +55,81 @@ public class EquipogeneralController {
 		}
 		
 		if(equipogeneral == null){
-			response.put("mensaje", "Equipogeneral NO EXISTE"+id.toString());
+			response.put("mensaje", "OrdenTrabajo NO EXISTE"+id.toString());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.NOT_FOUND);
 		}
 		
-		return new ResponseEntity<Equipogeneral>(equipogeneral, HttpStatus.OK);
+		return new ResponseEntity<OrdenTrabajo>(equipogeneral, HttpStatus.OK);
 	}
+	
+	/*save entity*/
+
+	@PutMapping("/updatereporte")
+	public ResponseEntity<?> equipoGeneralUpdateReporte( @RequestBody Reporte reporte){
+
+	OrdenTrabajo  equipogeneral= service.findByOt(reporte.getId_ot());
+	equipogeneral.setReporte(reporte);
+	service.saveentity(equipogeneral);
+	return ResponseEntity.ok(equipogeneral);
+	}
+	
+	
 	@GetMapping("/equipogeneralot/{ot}")
 	public ResponseEntity<?> ordenTrabajo(@PathVariable Long ot) {
-		
-		Equipogeneral equipogeneral = null;
+		Actividad actividad=new Actividad();
+		OrdenTrabajo equipogeneral = null;
 		Equipo equipo=null;
 		try{
 			equipogeneral = service.findByOt(ot);
 			if(equipogeneral!=null) {
-				equipo= service.findByEquipo(equipogeneral.getId());
-				if(equipo!=null) {
-				return ResponseEntity.ok(equipo);
-				}else {
-					equipo=new Equipo();
-					equipo.setIdcod(500);
-					equipo.setDescripcion("ERROR, EQUIPO NO ESTA RELACIONADO CON NINGUN EQUIPO GENERAL");
-					return ResponseEntity.ok(equipo);
+				List<Actividad> actividades=serviceActividad.findByOt(ot);
+				
+				if(actividades.size() >0)
+					actividad=actividades.get(0);
+				else {
+					actividad.setId(-1L);
+
+				//	System.out.println(equipogeneral.getIdEquipo());
+					actividad.getEquipo().setIdcod(equipogeneral.getIdEquipo());
+					//actividad.getEquipo().setIdcod(equipogeneral.getIdEquipo());
+	
 				}
+				
 			}else {
-				equipo=new Equipo();
-				equipo.setIdcod(0);
-				equipo.setDescripcion("OT NO ENCONTRADO");
-				return ResponseEntity.ok(equipo);
+				actividad.setId(5000L);
 			}
 
-			/*
-			if(equipogeneral!=null) {
-				equipo=service.findByEquipo(equipogeneral.getId());
-				if(equipo!=null) {
-					return ResponseEntity.ok(equipo);
-				}
-			}
-			
-				equipo=new Equipo();
-				equipo.setIdcod(0);
-				return ResponseEntity.ok(equipo);*/
+	
+		return ResponseEntity.ok(actividad);
+		} catch(DataAccessException e){
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}	
+	}
+	
+	@GetMapping("/equipogeneralbyot/{ot}")
+	public ResponseEntity<?> getEquipogeneralByOt(@PathVariable Long ot) {
+		
+		OrdenTrabajo equipogeneral = null;
+		try{
+			equipogeneral = service.findByOt(ot);
+			return ResponseEntity.ok(equipogeneral);
 		
 		} catch(DataAccessException e){
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-
+		}	
+	}
+	
 	
 
-	}
+
+	
 
 	@PostMapping("/equipogeneral")
-	public ResponseEntity<?> create(@RequestBody Equipogeneral equipogeneral) {
+	public ResponseEntity<?> create(@RequestBody OrdenTrabajo equipogeneral) {
 		int newEquipogeneral = -59;
 
-	
 		try {
-			newEquipogeneral = service.save(equipogeneral);
+			newEquipogeneral = service.save2(equipogeneral);
 			return ResponseEntity.ok(newEquipogeneral);
 		} catch (DataAccessException e) {
 			return ResponseEntity.ok(e.getMessage());
@@ -115,10 +139,10 @@ public class EquipogeneralController {
 	}
 	
 	@PutMapping("/equipogeneral/{id}")
-	public ResponseEntity<?> update(@RequestBody Equipogeneral equipogeneral, @PathVariable Long id) {
+	public ResponseEntity<?> update(@RequestBody OrdenTrabajo equipogeneral, @PathVariable Long id) {
 
-		Equipogeneral currentEquipogeneral = service.findById(id);
-		Equipogeneral equipogeneralUpdated = null;
+		OrdenTrabajo currentEquipogeneral = service.findById(id);
+		OrdenTrabajo equipogeneralUpdated = null;
 		
 		Map<String, Object> response = new HashMap<>();
 

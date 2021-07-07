@@ -70,6 +70,22 @@ public class DetalleactividadController {
 	
 		return ResponseEntity.ok(newDetalleactividad+"");
 	}
+	@PostMapping("/detalleListActividad")
+	public ResponseEntity<?> createListActividad(@RequestBody List<Detalleactividad> detalleactividad) {
+		int newDetalleactividad = 0;
+
+		try {
+		    for (Detalleactividad detalle: detalleactividad) {
+		    	service.saveWithOutActividad(detalle);
+		      }
+				newDetalleactividad=1;
+			
+		} catch (DataAccessException e) {
+			return ResponseEntity.notFound().build();
+		}
+	
+		return ResponseEntity.ok(newDetalleactividad+"");
+	}
 	
 	@PostMapping("/detalleactividad/full")
 	public ResponseEntity<?> createfull(@RequestBody Detalleactividad detalleactividad) {
